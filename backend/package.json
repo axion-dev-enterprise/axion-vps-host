@@ -1,0 +1,42 @@
+{
+  "name": "pontotecc-api",
+  "version": "0.2.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test --test-concurrency=1 dist/__tests__/*.test.js",
+    "prisma:generate": "cross-env DATABASE_URL=file:./prisma/dev.db prisma generate",
+    "db:init": "cross-env DATABASE_URL=file:./prisma/dev.db tsx src/scripts/initSqlite.ts",
+    "prisma:push": "npm run db:init",
+    "sync:phones": "npm run prisma:generate && npm run db:init && cross-env DATABASE_URL=file:./prisma/dev.db tsx src/scripts/syncPhones.ts",
+    "postinstall": "npm run prisma:generate"
+  },
+  "dependencies": {
+    "@pontotecc/contract": "file:../shared/pontotecc-contract",
+    "@prisma/client": "^6.19.2",
+    "cheerio": "^1.1.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "nodemailer": "^7.0.5",
+    "pino": "^10.3.1",
+    "pino-http": "^11.0.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.5.0",
+    "@types/nodemailer": "^7.0.1",
+    "cross-env": "^10.1.0",
+    "prisma": "^6.19.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
