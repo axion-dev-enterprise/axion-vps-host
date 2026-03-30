@@ -1,74 +1,89 @@
 import Link from "next/link";
-import type { Phone } from "@pontotecc/contract";
+import type { VpsPlan } from "@/lib/api/vps";
+import { ArrowRight, Cpu, Globe, HardDrive, Shield } from "lucide-react";
 
 import { PhoneImage } from "@/components/catalogo/PhoneImage";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 
-interface Product extends Phone {
+type Product = VpsPlan & {
   badge?: string;
   isFeatured?: boolean;
-}
+};
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const title = `${product.brand} ${product.model}`;
-  const variant = `${product.storageGb}GB`;
-
   return (
-    <div
+    <article
       className={cn(
-        "group relative flex flex-col rounded-[2.5rem] border border-white/80 bg-bg-surface p-8 shadow-soft transition-all duration-500 hover:-translate-y-2 hover:shadow-hover",
-        product.isFeatured ? "col-span-1 items-center gap-12 md:col-span-2 lg:col-span-3 lg:flex-row" : "",
+        "glass-card group relative flex flex-col overflow-hidden rounded-[2rem] border border-white/10 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/20",
+        product.isFeatured ? "lg:flex-row lg:items-center lg:gap-8" : "",
       )}
     >
       {product.badge ? (
-        <span className="absolute left-8 top-8 z-10 rounded-full bg-primary-soft px-4 py-1.5 text-xs font-bold text-primary-700">
+        <span className="absolute right-5 top-5 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-300">
           {product.badge}
         </span>
       ) : null}
 
-      <div
-        className={cn(
-          "relative flex items-center justify-center overflow-hidden transition-transform duration-500 group-hover:scale-105",
-          product.isFeatured ? "h-[320px] w-1/3 shrink-0" : "h-[240px] w-full",
-        )}
-      >
-        <PhoneImage
-          imageUrl={product.imageUrl}
-          alt={title}
-          featured={Boolean(product.isFeatured)}
-          priority={Boolean(product.isFeatured)}
-        />
+      <div className={cn(product.isFeatured ? "lg:w-[320px] lg:shrink-0" : "") }>
+        <PhoneImage alt={product.name} featured={Boolean(product.isFeatured)} />
       </div>
 
-      <div className={cn("flex flex-col gap-4", product.isFeatured ? "flex-1" : "mt-6 text-center")}>
-        <div className="space-y-1">
-          <h3 className={cn("font-bold tracking-tight text-text-strong", product.isFeatured ? "text-4xl" : "text-xl")}>
-            {title}
-          </h3>
-          <p className={cn("font-medium text-text-soft", product.isFeatured ? "text-2xl" : "text-sm")}>{variant}</p>
+      <div className={cn("flex flex-1 flex-col", product.isFeatured ? "mt-6 lg:mt-0" : "mt-6") }>
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">{product.name}</p>
+            <h3 className="mt-2 text-3xl font-semibold text-text-strong">{formatCurrency(product.priceMonthlyCents)}</h3>
+            <p className="mt-1 text-sm text-text-soft">{formatCurrency(product.priceYearlyCents)}/mês no anual</p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-right">
+            <p className="text-[11px] uppercase tracking-[0.24em] text-text-soft">Provisiona em</p>
+            <p className="mt-1 font-semibold text-white">{product.setupMinutes}</p>
+          </div>
         </div>
 
-        <p className="text-sm font-black uppercase tracking-[0.2em] text-primary-700">Solicitar Orçamento</p>
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-text-body">{product.subtitle}</p>
 
-        {product.isFeatured ? (
-          <p className="max-w-md text-lg leading-relaxed text-text-body">
-            {product.shortDescription || "Consulte disponibilidade e detalhes deste modelo com nosso atendimento."}
-          </p>
-        ) : null}
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <Spec icon={Cpu} label={`${product.resources.cpu} vCPU`} />
+          <Spec icon={HardDrive} label={product.resources.volume} />
+          <Spec icon={Shield} label={product.resources.ram} />
+          <Spec icon={Globe} label={product.resources.location} />
+        </div>
 
-        <Link
-          href={`/contato?produto=${encodeURIComponent(title)}`}
-          className={cn(
-            "inline-flex items-center justify-center rounded-full bg-primary-600 font-bold text-white shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-700 hover:shadow-card active:scale-95",
-            product.isFeatured ? "w-fit px-12 py-5 text-xl" : "mt-2 w-full py-4 text-sm",
-          )}
-        >
-          Solicitar Orçamento
-        </Link>
+        <ul className="mt-6 space-y-3 text-sm text-slate-300">
+          {product.highlights.map((item) => (
+            <li key={item} className="flex items-center gap-3">
+              <span className="h-2 w-2 rounded-full bg-[#00ff88]" />
+              {item}
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+          <p className="max-w-xl text-sm text-text-soft">{product.audience}</p>
+          <Link
+            href={`/checkout?plan=${product.id}`}
+            className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+          >
+            Contratar plano
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function Spec({ icon: Icon, label }: { icon: typeof Cpu; label: string }) {
+  return (
+    <div className="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 text-sm text-slate-200">
+      <div className="flex items-center gap-2 text-cyan-300">
+        <Icon size={16} />
+        <span className="font-medium">{label}</span>
       </div>
     </div>
   );

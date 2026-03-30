@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Manrope, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
+
+import { AppShell } from "@/components/layout/AppShell";
 
 import "./globals.css";
 
-const manrope = Manrope({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  variable: "--font-inter",
 });
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
+  variable: "--font-display",
 });
 
 export const metadata: Metadata = {
-  title: "PontoTecc | Catalogo de Celulares e Assistencia Especializada",
-  description: "Catalogo com celulares reais, imagens atualizadas e fluxo rapido para solicitar orcamento e atendimento especializado.",
+  title: "AXION VPS Host | Painel Profissional de Infraestrutura",
+  description: "Painel de gerenciamento VPS com dashboard operacional, marketplace, billing e administração.",
   icons: {
     icon: "/logopontotec.png",
     apple: "/logopontotec.png",
@@ -26,7 +28,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${manrope.variable} ${spaceGrotesk.variable} bg-bg-app font-sans antialiased`}>{children}</body>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
+        <AppShell>{children}</AppShell>
+      </body>
     </html>
   );
 }

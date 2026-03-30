@@ -1,4 +1,4 @@
-import Link from "next/link";
+import type { ReactNode } from "react";
 
 type SidebarFiltersProps = {
   brands: string[];
@@ -6,67 +6,76 @@ type SidebarFiltersProps = {
   selectedBrand?: string;
 };
 
-export function SidebarFilters({ brands, selectedQuery, selectedBrand }: SidebarFiltersProps) {
+const regions = ["São Paulo", "Miami", "Frankfurt", "Singapura"];
+const systems = ["Ubuntu", "Debian", "Rocky", "Windows"];
+
+export function SidebarFilters({ selectedQuery, selectedBrand }: SidebarFiltersProps) {
   return (
-    <aside className="w-full shrink-0 space-y-8 md:w-[280px]">
-      <div className="space-y-4">
-        <h3 className="text-sm font-black uppercase tracking-widest text-text-soft">Categoria</h3>
-        <div className="rounded-2xl bg-primary-soft p-4 text-sm font-bold text-primary-700 shadow-soft">
-          Smartphones
-        </div>
+    <aside className="glass-card w-full shrink-0 rounded-[2rem] border border-white/10 p-6 md:w-[320px]">
+      <div className="space-y-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Server filters</p>
+        <h2 className="text-2xl font-semibold text-text-strong">Filtre infraestrutura</h2>
+        <p className="text-sm leading-relaxed text-text-soft">Região, sistema operacional e faixa de preço para achar a VPS ideal.</p>
       </div>
 
-      <form className="space-y-6 rounded-[2rem] bg-bg-surface p-6 shadow-soft" action="/catalogo">
-        <div className="space-y-2">
-          <label className="text-sm font-black uppercase tracking-widest text-text-soft" htmlFor="q">
-            Busca
-          </label>
+      <form className="mt-6 space-y-5" action="/marketplace">
+        <Field label="Busca">
           <input
             id="q"
             name="q"
             defaultValue={selectedQuery || ""}
-            placeholder="Ex: iPhone, Galaxy, Redmi"
-            className="h-12 w-full rounded-2xl border border-border-soft bg-bg-muted px-4 text-sm font-medium text-text-body outline-none transition-all focus:border-primary-500"
+            placeholder="Ex: Docker, WordPress, high CPU"
+            className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-white outline-none"
           />
-        </div>
+        </Field>
 
-        <div className="space-y-2">
-          <label className="text-sm font-black uppercase tracking-widest text-text-soft" htmlFor="brand">
-            Marca
-          </label>
+        <Field label="Região">
           <select
-            id="brand"
-            name="brand"
+            id="region"
+            name="region"
             defaultValue={selectedBrand || ""}
-            className="h-12 w-full rounded-2xl border border-border-soft bg-bg-muted px-4 text-sm font-medium text-text-body outline-none transition-all focus:border-primary-500"
+            className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-white outline-none"
           >
             <option value="">Todas</option>
-            {brands.map((brand) => (
-              <option key={brand} value={brand}>
-                {brand}
+            {regions.map((region) => (
+              <option key={region} value={region}>
+                {region}
               </option>
             ))}
           </select>
-        </div>
+        </Field>
 
-        <button className="w-full rounded-2xl bg-primary-600 py-4 text-sm font-bold text-white shadow-soft transition-all hover:bg-primary-700 hover:shadow-card active:scale-[0.98]">
-          Buscar celulares
+        <Field label="Sistema operacional">
+          <div className="grid grid-cols-2 gap-2">
+            {systems.map((system) => (
+              <label key={system} className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-slate-300">
+                <input type="checkbox" name="os" value={system} className="accent-cyan-400" />
+                {system}
+              </label>
+            ))}
+          </div>
+        </Field>
+
+        <Field label="Faixa mensal">
+          <div className="grid grid-cols-2 gap-3">
+            <input placeholder="R$ mínimo" className="h-12 rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-white outline-none" />
+            <input placeholder="R$ máximo" className="h-12 rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-white outline-none" />
+          </div>
+        </Field>
+
+        <button className="w-full rounded-full bg-cyan-400 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300">
+          Aplicar filtros
         </button>
-
-        <Link
-          href="/catalogo"
-          className="block text-center text-xs font-black uppercase tracking-widest text-text-soft transition-colors hover:text-text-strong"
-        >
-          Limpar filtros
-        </Link>
       </form>
-
-      <Link
-        href="/contato"
-        className="block w-full rounded-2xl bg-bg-muted py-4 text-center text-sm font-bold text-text-strong transition-all hover:bg-bg-surface hover:shadow-soft"
-      >
-        Falar com atendimento
-      </Link>
     </aside>
+  );
+}
+
+function Field({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <label className="block space-y-2">
+      <span className="text-xs font-semibold uppercase tracking-[0.24em] text-text-soft">{label}</span>
+      {children}
+    </label>
   );
 }

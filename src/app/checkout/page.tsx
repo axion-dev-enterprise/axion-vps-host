@@ -1,7 +1,7 @@
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
 import { CheckoutSidebar } from "@/components/checkout/CheckoutSidebar";
-import { Topbar } from "@/components/layout/Topbar";
 import { getVpsPlans } from "@/lib/api/vps";
+import { fallbackPlans } from "@/lib/vps-content";
 
 export const dynamic = "force-dynamic";
 
@@ -14,18 +14,22 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
   const initialPlanId = params?.plan;
   const plans = await getVpsPlans()
     .then((response) => response.data)
-    .catch(() => []);
+    .catch(() => fallbackPlans);
 
   return (
-    <main className="min-h-screen bg-bg-app font-sans">
-      <Topbar />
-
-      <section className="mx-auto max-w-[1440px] px-6 py-8 md:px-10 md:py-10">
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
-          <CheckoutForm plans={plans} initialPlanId={initialPlanId} />
-          <CheckoutSidebar plans={plans} />
-        </div>
+    <div className="space-y-8">
+      <section className="glass-card rounded-[2rem] border border-white/10 p-6 md:p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Checkout</p>
+        <h1 className="mt-2 text-4xl font-semibold text-text-strong">Contratação de VPS</h1>
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-text-soft">
+          Fluxo adaptado para compra de hospedagem: plano, billing cycle, dados do cliente, domínio e preferência operacional.
+        </p>
       </section>
-    </main>
+
+      <section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <CheckoutForm plans={plans} initialPlanId={initialPlanId} />
+        <CheckoutSidebar plans={plans} />
+      </section>
+    </div>
   );
 }

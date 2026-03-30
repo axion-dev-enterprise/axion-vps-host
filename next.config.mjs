@@ -2,6 +2,9 @@
 const nextConfig = {
   reactCompiler: true,
   transpilePackages: ["@pontotecc/contract"],
+  experimental: {
+    cpus: 1,
+  },
   images: {
     qualities: [75, 100],
     remotePatterns: [
