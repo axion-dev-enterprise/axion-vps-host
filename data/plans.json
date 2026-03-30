@@ -1,5 +1,5 @@
 [
-  {"id":"starter-2","name":"Starter 2","cpu":2,"ram":4,"disk":80,"price_monthly":59.90,"price_annual":51.90},
-  {"id":"performance-4","name":"Performance 4","cpu":4,"ram":8,"disk":160,"price_monthly":119.90,"price_annual":104.90},
-  {"id":"scale-8","name":"Scale 8","cpu":8,"ram":16,"disk":320,"price_monthly":209.90,"price_annual":187.90}
+  {"id":"starter","name":"Starter","cpu":1,"ram":2,"disk":50,"price_annual":89.90,"price_monthly":8.49},
+  {"id":"pro","name":"Pro","cpu":2,"ram":4,"disk":50,"price_annual":149.90,"price_monthly":14.49},
+  {"id":"modular","name":"Modular","cpu":"2-4","ram":"4-8","disk":"ilimitado","price_annual":249.90,"price_monthly":24.49}
 ]

@@ -2,22 +2,22 @@ import Link from "next/link";
 
 const plans = [
   {
-    name: "Starter 2",
-    specs: ["2 vCPU", "4 GB RAM", "80 GB NVMe"],
-    monthly: "R$ 59,90/mês",
-    yearly: "R$ 51,90/mês",
+    name: "Starter",
+    specs: ["1 vCPU", "2 GB RAM", "50 GB SSD"],
+    monthly: "R$ 8,49/mês",
+    yearly: "R$ 89,90/ano",
   },
   {
-    name: "Performance 4",
-    specs: ["4 vCPU", "8 GB RAM", "160 GB NVMe"],
-    monthly: "R$ 119,90/mês",
-    yearly: "R$ 104,90/mês",
+    name: "Pro",
+    specs: ["2 vCPU", "4 GB RAM", "50 GB SSD"],
+    monthly: "R$ 14,49/mês",
+    yearly: "R$ 149,90/ano",
   },
   {
-    name: "Scale 8",
-    specs: ["8 vCPU", "16 GB RAM", "320 GB NVMe"],
-    monthly: "R$ 209,90/mês",
-    yearly: "R$ 187,90/mês",
+    name: "Modular",
+    specs: ["2-4 vCPU", "4-8 GB RAM", "SSD Ilimitado"],
+    monthly: "R$ 24,49/mês",
+    yearly: "R$ 249,90/ano",
   },
 ];
 
@@ -26,9 +26,9 @@ export default function HomePage() {
     <main className="mx-auto flex min-h-[calc(100vh-120px)] w-full max-w-7xl flex-col px-4 py-10 sm:px-6 lg:px-8">
       <section className="rounded-[2rem] border border-white/10 bg-white/5 px-6 py-12 text-center shadow-2xl shadow-black/20 sm:px-10">
         <span className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">AXION VPS HOST</span>
-        <h1 className="mt-4 text-4xl font-semibold text-white sm:text-5xl">VPS pronta para rodar seu projeto sem complicação</h1>
+        <h1 className="mt-4 text-4xl font-semibold text-white sm:text-5xl">Hospedagem VPS de Alta Performance</h1>
         <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
-          Escolha um plano direto, com performance, estabilidade e recursos sob medida para colocar sua operação no ar.
+          Servidores rápidos, painel profissional e suporte humano.
         </p>
 
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -67,7 +67,6 @@ export default function HomePage() {
               <div className="mt-8 space-y-2 border-t border-white/10 pt-6">
                 <p className="text-2xl font-semibold text-white">{plan.monthly}</p>
                 <p className="text-lg font-medium text-cyan-300">{plan.yearly}</p>
-                <p className="text-sm text-slate-400">(plano anual)</p>
               </div>
 
               <Link
@@ -81,8 +80,23 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="mt-12 grid gap-6 sm:grid-cols-3">
+        <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-6 text-center">
+          <p className="text-2xl font-semibold text-white">5-15 min</p>
+          <p className="mt-2 text-sm text-slate-400">Deploy rápido</p>
+        </div>
+        <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-6 text-center">
+          <p className="text-2xl font-semibold text-white">Humano</p>
+          <p className="mt-2 text-sm text-slate-400">Suporte real</p>
+        </div>
+        <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-6 text-center">
+          <p className="text-2xl font-semibold text-white">Profissional</p>
+          <p className="mt-2 text-sm text-slate-400">Painel completo</p>
+        </div>
+      </section>
+
       <footer className="mt-12 border-t border-white/10 px-2 pt-6 text-center text-sm text-slate-400">
-        © 2026 AXION VPS HOST. Estrutura simples, clara e pronta para conversão.
+        © 2026 AXION VPS HOST. Hospedagem simples, rápida e profissional.
       </footer>
     </main>
   );
