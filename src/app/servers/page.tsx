@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RefreshCcw, Search, ServerCog, Shield } from "lucide-react";
+import { RefreshCcw, Search, ServerCog, Shield, TerminalSquare } from "lucide-react";
 
 import { SidebarFilters } from "@/components/catalogo/SidebarFilters";
 import { demoServers, getStatusTone } from "@/lib/vps-content";
@@ -11,9 +11,9 @@ export default function ServersPage() {
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Servers</p>
-            <h1 className="mt-2 text-4xl font-semibold text-text-strong">Fleet de VPS</h1>
+            <h1 className="mt-2 text-4xl font-semibold text-text-strong">Meus servidores</h1>
             <p className="mt-3 max-w-3xl text-sm leading-relaxed text-text-soft">
-              Veja status, especificações, alertas e execute ações operacionais rápidas como start, stop e restart.
+              Acompanhe os VPS vinculados ao cliente, com ações rápidas para start, stop, restart e acesso ao console do ambiente.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -21,19 +21,18 @@ export default function ServersPage() {
               <Search size={16} />
               Buscar servidor
             </button>
-            <button className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950">
+            <Link href="/marketplace" className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950">
               <ServerCog size={16} />
-              Novo deploy
-            </button>
+              Contratar novo VPS
+            </Link>
           </div>
         </div>
       </section>
 
       <div className="flex flex-col gap-6 xl:flex-row">
         <SidebarFilters brands={[]} />
-
         <div className="min-w-0 flex-1 space-y-4">
-          {demoServers.map((server) => (
+          {demoServers.slice(0, 3).map((server) => (
             <article key={server.id} className="glass-card rounded-[2rem] border border-white/10 p-5 md:p-6">
               <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
                 <div className="space-y-3">
@@ -57,9 +56,10 @@ export default function ServersPage() {
                     <RefreshCcw size={15} />
                     Restart
                   </button>
-                  <Link href={`/servers/${server.id}`} className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-sm font-semibold text-cyan-300">
-                    Detalhes
-                  </Link>
+                  <button className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-sm font-semibold text-cyan-300">
+                    <TerminalSquare size={15} />
+                    Console
+                  </button>
                 </div>
               </div>
 

@@ -1,0 +1,5 @@
+[
+  {"id":"starter-2","name":"Starter 2","cpu":2,"ram":4,"disk":80,"price_monthly":59.90,"price_annual":51.90},
+  {"id":"performance-4","name":"Performance 4","cpu":4,"ram":8,"disk":160,"price_monthly":119.90,"price_annual":104.90},
+  {"id":"scale-8","name":"Scale 8","cpu":8,"ram":16,"disk":320,"price_monthly":209.90,"price_annual":187.90}
+]

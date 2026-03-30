@@ -1,4 +1,4 @@
-import { Activity, BellRing, Shield, Wrench } from "lucide-react";
+import { Activity, BellRing, Shield, UsersRound, Wrench } from "lucide-react";
 
 import { AdminContent } from "@/components/admin/AdminContent";
 
@@ -11,21 +11,23 @@ export default function AdminPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Admin</p>
             <h1 className="mt-2 text-4xl font-semibold text-text-strong">Console administrativo</h1>
             <p className="mt-3 max-w-3xl text-sm leading-relaxed text-text-soft">
-              Área dedicada para operação, toolkit, branding e acompanhamento das ordens VPS já integradas ao backend existente.
+              Visão global da carteira, usuários, planos do marketplace e todos os servidores provisionados no ambiente.
             </p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-3">
-            <AdminChip icon={Shield} label="Acesso protegido" />
-            <AdminChip icon={Activity} label="Dashboard live" />
-            <AdminChip icon={Wrench} label="Provisioning ops" />
+          <div className="grid gap-3 sm:grid-cols-4">
+            <AdminChip icon={Shield} label="Role admin" />
+            <AdminChip icon={Activity} label="Métricas globais" />
+            <AdminChip icon={UsersRound} label="Clientes" />
+            <AdminChip icon={Wrench} label="Ops" />
           </div>
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
-        <InfoCard icon={BellRing} title="Alertas operacionais" copy="Pedidos, DNS, falhas e handoff ficam centralizados no mesmo ambiente administrativo." />
-        <InfoCard icon={Shield} title="Segurança" copy="Mantém a camada de autenticação e sessões do backend intacta, apenas com nova apresentação visual." />
-        <InfoCard icon={Wrench} title="Ferramentas" copy="Ações de provisionamento, DNS e envio de credenciais continuam acessíveis dentro do painel." />
+      <section className="grid gap-4 md:grid-cols-4">
+        <InfoCard icon={BellRing} title="Alertas operacionais" copy="Incidentes, provisionamento, billing e handoff centralizados em um só lugar." />
+        <InfoCard icon={Shield} title="Segurança" copy="Acesso liberado apenas quando o middleware encontra um JWT válido com role admin." />
+        <InfoCard icon={UsersRound} title="Gestão de usuários" copy="Base inicial em JSON para bootstrap rápido sem tocar no backend existente." />
+        <InfoCard icon={Wrench} title="Marketplace" copy="Admin pronto para revisar planos, acompanhar provisioning e atuar sobre toda a operação." />
       </section>
 
       <AdminContent />

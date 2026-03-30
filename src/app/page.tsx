@@ -1,190 +1,164 @@
-import { BellRing, Cpu, HardDrive, Shield, TerminalSquare } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Check, CreditCard, Rocket, ShieldCheck, Star, Zap } from "lucide-react";
 
-import { Hero } from "@/components/home/Hero";
-import { MostSoldSection } from "@/components/home/MostSoldSection";
-import {
-  controlShortcuts,
-  dashboardAlerts,
-  dashboardServices,
-  dashboardStats,
-  demoServers,
-  infraHighlights,
-} from "@/lib/vps-content";
+import { ProductCard } from "@/components/catalogo/ProductCard";
+import { getVpsPlans } from "@/lib/api/vps";
+import { fallbackPlans } from "@/lib/vps-content";
 
 export const dynamic = "force-dynamic";
 
-const accentStyles: Record<string, string> = {
-  online: "text-[#00ff88]",
-  cyan: "text-cyan-300",
-  purple: "text-fuchsia-300",
-  warning: "text-amber-300",
-};
+const testimonials = [
+  {
+    name: "Marina Lopes",
+    company: "Studio Commerce",
+    quote: "Migramos o stack para AXION e ganhamos previsibilidade, deploy rápido e suporte humano de verdade.",
+  },
+  {
+    name: "Rafael Nunes",
+    company: "Cloud Ops Squad",
+    quote: "A combinação de VPS + painel + billing em um só fluxo reduz muito o tempo de operação do time.",
+  },
+  {
+    name: "Isabela Costa",
+    company: "Agência Delta",
+    quote: "A landing vende bem porque fica claro o valor: performance, proteção e onboarding guiado.",
+  },
+];
 
-export default function HomePage() {
-  const pinnedServers = demoServers.slice(0, 3);
+const features = [
+  "Provisionamento rápido com planos prontos para produção",
+  "Firewall, snapshots e postura operacional desde o primeiro deploy",
+  "Dashboard do cliente com métricas, servidores e faturamento",
+  "Console admin separado para operação completa da carteira",
+];
+
+const priceHighlights = [
+  { label: "Setup médio", value: "5-15 min" },
+  { label: "Uptime agregado", value: "99,98%" },
+  { label: "Suporte", value: "Humano + operacional" },
+];
+
+export default async function HomePage() {
+  const plans = await getVpsPlans()
+    .then((response) => response.data)
+    .catch(() => fallbackPlans);
 
   return (
-    <div className="space-y-8">
-      <Hero />
+    <div className="space-y-8 pb-6">
+      <section className="overflow-hidden rounded-[2.4rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(0,212,255,0.22),transparent_35%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-6 md:p-10">
+        <div className="grid gap-10 xl:grid-cols-[1.1fr_0.9fr] xl:items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-300">Landing page pública</p>
+            <h1 className="mt-4 max-w-4xl text-5xl font-semibold leading-tight text-white md:text-6xl">
+              VPS profissional com painel premium, onboarding rápido e acesso separado para cliente e admin.
+            </h1>
+            <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-300">
+              Venda infraestrutura como produto: landing para conversão, marketplace para escolha do plano e dashboard protegido para operação do cliente.
+            </p>
 
-      <section className="grid gap-4 xl:grid-cols-4">
-        {dashboardStats.map((stat) => (
-          <article key={stat.label} className="glass-card rounded-[1.8rem] border border-white/10 p-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-text-soft">{stat.label}</p>
-            <p className={`mt-3 text-4xl font-semibold ${accentStyles[stat.accent]}`}>{stat.value}</p>
-            <p className="mt-2 text-sm text-text-soft">{stat.delta}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        <div className="glass-card rounded-[2rem] border border-white/10 p-6">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Infra fleet</p>
-              <h2 className="mt-2 text-3xl font-semibold text-text-strong">Servidores em operação</h2>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/marketplace" className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300">
+                Escolher plano
+                <ArrowRight size={16} />
+              </Link>
+              <Link href="/login" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                Login
+              </Link>
             </div>
-            <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300">12 nodes</div>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              {features.map((item) => (
+                <div key={item} className="flex items-start gap-3 rounded-[1.4rem] border border-white/10 bg-white/5 px-4 py-4">
+                  <Check size={18} className="mt-0.5 text-emerald-300" />
+                  <p className="text-sm text-slate-200">{item}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="mt-6 space-y-4">
-            {pinnedServers.map((server) => (
-              <div key={server.id} className="rounded-[1.6rem] border border-white/10 bg-white/5 p-5">
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                  <div>
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-xl font-semibold text-white">{server.name}</h3>
-                      <span className="rounded-full border border-[#00ff88]/20 bg-[#00ff88]/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#00ff88]">
-                        {server.status}
-                      </span>
-                    </div>
-                    <p className="mt-2 text-sm text-text-soft">{server.region} · {server.os} · {server.ip}</p>
-                  </div>
-                  <div className="text-right text-sm text-text-soft">
-                    <p>{server.plan}</p>
-                    <p>{server.uptime} de uptime</p>
-                  </div>
-                </div>
-                <div className="mt-5 grid gap-4 md:grid-cols-3">
-                  <Metric label="CPU" value={server.cpu} />
-                  <Metric label="RAM" value={server.ram} />
-                  <Metric label="Disco" value={server.disk} />
-                </div>
+          <div className="grid gap-4">
+            <div className="glass-card rounded-[2rem] border border-white/10 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Oferta em destaque</p>
+              <div className="mt-5 grid gap-4 md:grid-cols-3 xl:grid-cols-1">
+                {priceHighlights.map((item) => (
+                  <article key={item.label} className="rounded-[1.4rem] border border-white/10 bg-white/5 p-5">
+                    <p className="text-sm text-text-soft">{item.label}</p>
+                    <p className="mt-3 text-3xl font-semibold text-white">{item.value}</p>
+                  </article>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <div className="glass-card rounded-[2rem] border border-white/10 p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Serviços gerenciados</p>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              {dashboardServices.map((item) => (
-                <div key={item.title} className="rounded-[1.4rem] border border-white/10 bg-white/5 p-4">
-                  <div className="flex items-center gap-2 text-cyan-300">
-                    <item.icon size={16} />
-                    <span className="text-sm font-medium">{item.title}</span>
-                  </div>
-                  <p className="mt-3 text-2xl font-semibold text-white">{item.value}</p>
-                  <p className="mt-2 text-sm text-text-soft">{item.note}</p>
-                </div>
-              ))}
             </div>
-          </div>
-
-          <div className="glass-card rounded-[2rem] border border-white/10 p-6">
-            <div className="flex items-center gap-2 text-cyan-300">
-              <BellRing size={18} />
-              <p className="text-xs font-semibold uppercase tracking-[0.28em]">Alertas</p>
-            </div>
-            <div className="mt-5 space-y-4">
-              {dashboardAlerts.map((alert) => (
-                <div key={alert.title} className="rounded-[1.4rem] border border-white/10 bg-white/5 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-300">{alert.level}</p>
-                  <h3 className="mt-2 text-lg font-semibold text-white">{alert.title}</h3>
-                  <p className="mt-2 text-sm text-text-soft">{alert.copy}</p>
-                </div>
-              ))}
+            <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-1">
+              <MiniCard icon={Rocket} title="Deploy acelerado" copy="Templates prontos para sites, automações, APIs e stacks com Docker." />
+              <MiniCard icon={ShieldCheck} title="Segurança nativa" copy="Cookies httpOnly, middleware e segregação real entre cliente e admin." />
+              <MiniCard icon={CreditCard} title="Billing integrado" copy="Faturas, upgrades e pagamento guiado no mesmo ecossistema." />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[1fr_1fr]">
-        <div className="glass-card rounded-[2rem] border border-white/10 p-6">
+      <section className="glass-card rounded-[2rem] border border-white/10 p-6 md:p-8">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Core features</p>
-            <h2 className="mt-2 text-3xl font-semibold text-text-strong">Operação com cara de painel premium</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Marketplace preview</p>
+            <h2 className="mt-2 text-4xl font-semibold text-white">Planos em destaque</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-text-soft">
+              Mostre os planos mais vendáveis na landing e envie o usuário direto para o marketplace completo quando ele estiver pronto para comprar.
+            </p>
           </div>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {infraHighlights.map((item) => (
-              <article key={item.title} className="rounded-[1.6rem] border border-white/10 bg-white/5 p-5">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-400/15 bg-cyan-400/10 text-cyan-300">
-                  <item.icon size={18} />
-                </div>
-                <h3 className="mt-4 text-lg font-semibold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-text-soft">{item.copy}</p>
-              </article>
-            ))}
-          </div>
+          <Link href="/marketplace" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10">
+            Ver todos os planos
+            <ArrowRight size={16} />
+          </Link>
         </div>
 
-        <div className="glass-card rounded-[2rem] border border-white/10 p-6">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Console rápido</p>
-            <h2 className="mt-2 text-3xl font-semibold text-text-strong">Ações operacionais</h2>
-          </div>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {controlShortcuts.map((item) => (
-              <article key={item.title} className="rounded-[1.6rem] border border-white/10 bg-white/5 p-5">
-                <div className="flex items-center gap-3 text-cyan-300">
-                  <item.icon size={18} />
-                  <h3 className="text-lg font-semibold text-white">{item.title}</h3>
-                </div>
-                <p className="mt-3 text-sm leading-relaxed text-text-soft">{item.copy}</p>
-              </article>
-            ))}
-          </div>
+        <div className="mt-8 grid gap-6 xl:grid-cols-3">
+          {plans.slice(0, 3).map((plan, index) => (
+            <ProductCard
+              key={plan.id}
+              product={{
+                ...plan,
+                badge: index === 0 ? "Mais rápido" : index === 1 ? "Melhor custo" : "Escala alta",
+                isFeatured: index === 1,
+              }}
+            />
+          ))}
         </div>
       </section>
 
-      <MostSoldSection />
-
-      <section className="glass-card rounded-[2rem] border border-white/10 p-6">
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-400/15 bg-cyan-400/10 text-cyan-300">
-            <TerminalSquare size={18} />
-          </div>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Resumo operacional</p>
-            <h2 className="mt-1 text-3xl font-semibold text-text-strong">Pronto para substituir o catálogo antigo</h2>
+      <section className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+        <div className="glass-card rounded-[2rem] border border-white/10 p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Por que converte</p>
+          <h2 className="mt-2 text-3xl font-semibold text-white">Clareza de produto, operação e segurança.</h2>
+          <div className="mt-6 grid gap-4">
+            <Reason icon={Zap} title="Performance" copy="Planos objetivos, benchmark comercial forte e CTA direto para compra." />
+            <Reason icon={ShieldCheck} title="Confiança" copy="Separação entre área pública, painel do cliente e administração protegida." />
+            <Reason icon={Star} title="Experiência" copy="Design dark premium sem sacrificar navegação nem onboarding." />
           </div>
         </div>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          <Summary icon={Cpu} title="CPU & métricas" copy="Visão em tempo real por servidor com barras de uso e alertas visuais." />
-          <Summary icon={HardDrive} title="Backups & storage" copy="Volumes NVMe, retenção configurável e monitoramento de snapshots." />
-          <Summary icon={Shield} title="Segurança & billing" copy="Firewall, postura operacional e ciclo de cobrança no mesmo painel." />
+
+        <div className="grid gap-4 md:grid-cols-3">
+          {testimonials.map((item) => (
+            <article key={item.name} className="glass-card rounded-[2rem] border border-white/10 p-5">
+              <div className="flex items-center gap-1 text-amber-300">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <Star key={`${item.name}-${index}`} size={16} fill="currentColor" />
+                ))}
+              </div>
+              <p className="mt-4 text-sm leading-relaxed text-slate-200">“{item.quote}”</p>
+              <div className="mt-6">
+                <p className="font-semibold text-white">{item.name}</p>
+                <p className="text-sm text-text-soft">{item.company}</p>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
     </div>
   );
 }
 
-function Metric({ label, value }: { label: string; value: number }) {
-  return (
-    <div>
-      <div className="flex items-center justify-between text-sm text-text-soft">
-        <span>{label}</span>
-        <span>{value}%</span>
-      </div>
-      <div className="metric-bar mt-2 h-3 overflow-hidden rounded-full bg-white/10">
-        <div className="h-full rounded-full bg-[linear-gradient(90deg,#00d4ff,#00ff88)]" style={{ width: `${value}%` }} />
-      </div>
-    </div>
-  );
-}
-
-function Summary({ icon: Icon, title, copy }: { icon: typeof Cpu; title: string; copy: string }) {
+function MiniCard({ icon: Icon, title, copy }: { icon: typeof Rocket; title: string; copy: string }) {
   return (
     <article className="rounded-[1.6rem] border border-white/10 bg-white/5 p-5">
       <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-400/15 bg-cyan-400/10 text-cyan-300">
@@ -192,6 +166,18 @@ function Summary({ icon: Icon, title, copy }: { icon: typeof Cpu; title: string;
       </div>
       <h3 className="mt-4 text-lg font-semibold text-white">{title}</h3>
       <p className="mt-2 text-sm text-text-soft">{copy}</p>
+    </article>
+  );
+}
+
+function Reason({ icon: Icon, title, copy }: { icon: typeof Rocket; title: string; copy: string }) {
+  return (
+    <article className="rounded-[1.6rem] border border-white/10 bg-white/5 p-5">
+      <div className="flex items-center gap-3 text-cyan-300">
+        <Icon size={18} />
+        <h3 className="text-lg font-semibold text-white">{title}</h3>
+      </div>
+      <p className="mt-3 text-sm leading-relaxed text-text-soft">{copy}</p>
     </article>
   );
 }

@@ -11,6 +11,8 @@ const backendPort = Number.parseInt(process.env.BACKEND_PORT || "3001", 10);
 const backendOrigin = new URL(process.env.PONTOTECC_API_BASE_URL || `http://127.0.0.1:${backendPort}`);
 let backendProcess = null;
 
+const NEXT_API_PREFIXES = ["/api/auth/", "/api/webhooks/", "/api/plans"];
+
 function ensureEmbeddedBackend() {
   if (dev || process.env.DISABLE_EMBEDDED_BACKEND === "true") {
     return;
@@ -68,6 +70,15 @@ function proxyToBackend(req, res) {
   req.pipe(proxyRequest);
 }
 
+function isNextApiRoute(pathname) {
+  return NEXT_API_PREFIXES.some((prefix) => {
+    if (prefix.endsWith("/")) {
+      return pathname.startsWith(prefix);
+    }
+    return pathname === prefix || pathname.startsWith(prefix + "/");
+  });
+}
+
 app
   .prepare()
   .then(() => {
@@ -90,6 +101,11 @@ app
           res.statusCode = 200;
           res.setHeader("content-type", "application/json; charset=utf-8");
           res.end(JSON.stringify({ ok: true }));
+          return;
+        }
+
+        if (parsedUrl.pathname?.startsWith("/api/") && isNextApiRoute(parsedUrl.pathname)) {
+          handle(req, res, parsedUrl);
           return;
         }
 

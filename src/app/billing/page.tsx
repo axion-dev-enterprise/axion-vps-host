@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CreditCard, ReceiptText, Wallet } from "lucide-react";
 
 import { billingRecords } from "@/lib/vps-content";
@@ -9,20 +10,35 @@ const statusClasses = {
 } as const;
 
 export default function BillingPage() {
+  const pendingRecords = billingRecords.filter((record) => record.status !== "paid");
+
   return (
     <div className="space-y-8">
       <section className="glass-card rounded-[2rem] border border-white/10 p-6 md:p-8">
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Billing</p>
-        <h1 className="mt-2 text-4xl font-semibold text-text-strong">Faturas e pagamentos</h1>
+        <h1 className="mt-2 text-4xl font-semibold text-text-strong">Minhas faturas</h1>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-text-soft">
-          Histórico financeiro com invoices, métodos de pagamento, upgrades e status de cobrança por ambiente.
+          Histórico de pagamentos, cobranças pendentes e atalho para pagamento via AXION-PAY quando houver invoice em aberto.
         </p>
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
-        <Summary icon={Wallet} label="MRR infraestrutura" value="R$ 8.490,00" note="Receita recorrente mensal prevista" />
-        <Summary icon={CreditCard} label="Pagamentos em processamento" value="02" note="Aguardando confirmação da adquirente" />
-        <Summary icon={ReceiptText} label="Faturas pendentes" value="01" note="Vencimento mais próximo em 12 abr 2026" />
+        <Summary icon={Wallet} label="MRR contratado" value="R$ 8.490,00" note="Valor agregado dos ambientes ativos" />
+        <Summary icon={CreditCard} label="Pagamentos em processamento" value="02" note="Transações aguardando confirmação" />
+        <Summary icon={ReceiptText} label="Pendências" value={String(pendingRecords.length).padStart(2, "0")} note="Faturas abertas para o próximo ciclo" />
+      </section>
+
+      <section className="glass-card rounded-[2rem] border border-cyan-400/10 bg-[linear-gradient(180deg,rgba(0,212,255,0.10),rgba(255,255,255,0.02))] p-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-300">Ação rápida</p>
+            <h2 className="mt-2 text-2xl font-semibold text-white">Pague a próxima cobrança com AXION-PAY</h2>
+            <p className="mt-2 text-sm text-text-soft">Fluxo pronto para redirecionar o cliente ao checkout quando a integração estiver publicada.</p>
+          </div>
+          <Link href="https://pay.axionenterprise.cloud" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950">
+            Ir para AXION-PAY
+          </Link>
+        </div>
       </section>
 
       <section className="glass-card overflow-hidden rounded-[2rem] border border-white/10">

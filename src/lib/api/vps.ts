@@ -8,6 +8,7 @@ export type VpsPlan = {
   setupMinutes: string;
   subtitle: string;
   audience: string;
+  checkoutUrl?: string;
   resources: {
     cpu: number;
     ram: string;
@@ -87,7 +88,7 @@ export type CreateVpsOrderInput = {
 };
 
 export async function getVpsPlans() {
-  return fetchApiJson<{ data: VpsPlan[] }>({ path: "/api/v1/vps/plans" });
+  return fetchApiJson<{ data: VpsPlan[] }>({ path: "/api/plans" });
 }
 
 export async function createVpsOrder(input: CreateVpsOrderInput) {
