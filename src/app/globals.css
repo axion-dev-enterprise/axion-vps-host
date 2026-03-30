@@ -114,3 +114,8 @@ h6 {
     transition-duration: 0ms !important;
   }
 }
+
+* { box-sizing: border-box; }
+html, body { overflow-x: hidden; }
+.flex, [class*="grid"] { min-width: 0; }
+img, svg { max-width: 100%; height: auto; }
